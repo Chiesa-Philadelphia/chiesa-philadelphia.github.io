@@ -31,10 +31,15 @@
   .verse small{display:block;margin-top:8px;font-family:Inter,sans-serif;font-size:13px;color:var(--gold)}
   h2{font-family:Fraunces,serif;font-size:22px;margin:34px 0 12px}
   .info{display:grid;gap:10px}
-  .info div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .info > div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
   .info b{color:var(--gold2)}
-  .steps p{margin:0}
-  .steps p+p{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+  .info .steps{padding:18px 16px;display:grid;gap:0}
+  .step{display:grid;grid-template-columns:36px 1fr;gap:14px;position:relative;padding-bottom:18px}
+  .step:last-child{padding-bottom:0}
+  .step:not(:last-child)::before{content:"";position:absolute;left:17px;top:38px;bottom:4px;width:2px;background:var(--line)}
+  .step .n{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font:600 16px Fraunces,serif}
+  .step b{display:block;color:var(--gold2);font-size:17px;margin-top:6px}
+  .step p{margin:4px 0 0;color:var(--muted);font-size:15px}
   label.f{display:block;font-weight:600;margin:18px 0 6px}
   .hint{font-weight:400;color:var(--muted);font-size:14px}
   input[type=text],input[type=tel],input[type=email],input[type=password],input[type=number],textarea{
@@ -108,7 +113,11 @@
 
     <h2 data-t="howT"></h2>
     <div class="info">
-      <div class="steps"><p data-t="how1"></p><p data-t="how2"></p><p data-t="how3"></p></div>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><div><b data-t="h1t"></b><p data-t="h1d"></p></div></div>
+        <div class="step"><span class="n">2</span><div><b data-t="h2t"></b><p data-t="h2d"></p></div></div>
+        <div class="step"><span class="n">3</span><div><b data-t="h3t"></b><p data-t="h3d"></p></div></div>
+      </div>
     </div>
 
 
@@ -202,9 +211,9 @@ ro: {
   lockedT:"Pagină pentru membrii bisericii", lockedP:"Pentru a te înscrie, scanează codul QR afișat în biserică.",
   verse:"„Ca niște buni ispravnici ai harului felurit al lui Dumnezeu, fiecare din voi să slujească altora după darul pe care l-a primit.”", verseRef:"1 Petru 4:10",
   howT:"Cum funcționează",
-  how1:"<b>1. Alege</b> unul sau mai multe departamente — nu e nevoie de experiență.",
-  how2:"<b>2. Te contactăm</b> în câteva zile: responsabilul departamentului te sună sau îți scrie pe WhatsApp.",
-  how3:"<b>3. Începi</b> cu o perioadă de acomodare, alături de cineva din echipă.",
+  h1t:"Alegi unde vrei să slujești", h1d:"Bifează unul sau mai multe departamente. Nu ai nevoie de experiență.",
+  h2t:"Te contactăm noi", h2d:"În câteva zile liderul departamentului te sună sau îți scrie pe WhatsApp.",
+  h3t:"Începi alături de echipă", h3d:"Slujești împreună cu ceilalți și înveți pe parcurs, fără grabă.",
   progT:"Programul bisericii", prog1:"<b>Tineret</b> — în fiecare luni, ora 19:30", prog2:"<b>Cina Domnului</b> — în prima duminică a lunii",
   formT:"Formular de înscriere", lName:"Nume și prenume", lPhone:"Telefon / WhatsApp",
   lEmail:'Email <span class="hint">(opțional)</span>',
@@ -244,9 +253,9 @@ it: {
   lockedT:"Pagina riservata ai membri della chiesa", lockedP:"Per iscriverti, scansiona il codice QR esposto in chiesa.",
   verse:"«Secondo che ciascuno ha ricevuto alcun dono, amministratelo gli uni agli altri, come buoni dispensatori della svariata grazia di Dio.»", verseRef:"1 Pietro 4:10 (Diodati)",
   howT:"Come funziona",
-  how1:"<b>1. Scegli</b> uno o più ministeri — non serve esperienza.",
-  how2:"<b>2. Ti contattiamo</b> entro pochi giorni: il responsabile del ministero ti chiama o ti scrive su WhatsApp.",
-  how3:"<b>3. Inizi</b> con un periodo di inserimento, insieme a qualcuno del gruppo.",
+  h1t:"Scegli dove servire", h1d:"Seleziona uno o più ministeri. Non serve esperienza.",
+  h2t:"Ti contattiamo noi", h2d:"Entro pochi giorni il responsabile del ministero ti chiama o ti scrive su WhatsApp.",
+  h3t:"Inizi insieme al gruppo", h3d:"Servi accanto agli altri e impari strada facendo, senza fretta.",
   progT:"Programma della chiesa", prog1:"<b>Giovani (Tineret)</b> — ogni lunedì alle 19:30", prog2:"<b>Santa Cena</b> — la prima domenica del mese",
   formT:"Modulo di iscrizione", lName:"Nome e cognome", lPhone:"Telefono / WhatsApp",
   lEmail:'Email <span class="hint">(facoltativa)</span>',
