@@ -210,6 +210,15 @@
       <div class="msg" id="perr"></div>
       <p style="text-align:center;margin-top:14px"><button type="button" class="gh sm" id="pwCancel" data-t="cancel"></button></p>
     </form>
+    <form id="onb" hidden novalidate>
+      <h2 style="margin-top:0" data-t="onbT"></h2>
+      <p class="wl" data-t="onbP"></p>
+      <label class="f" for="ntel" data-t="onbL"></label>
+      <input id="ntel" type="tel" inputmode="tel" autocomplete="tel" placeholder="+39 3xx xxx xxxx">
+      <button class="btn" type="submit" data-t="onbSave"></button>
+      <div class="msg" id="oerr"></div>
+      <p style="text-align:center;margin-top:14px"><button type="button" class="gh sm" id="onbSkip" data-t="onbSkip"></button></p>
+    </form>
     <div id="app" hidden>
       <div class="row">
         <button class="gh sm" id="reload" data-t="aReload"></button>
@@ -224,6 +233,7 @@
           <button class="gh sm" id="qrdl" style="margin-top:8px" data-t="aQrDl"></button></p>
       </div>
       <p class="meta" id="cine" style="margin:14px 0 0"></p>
+      <div class="card row" style="justify-content:space-between;flex-wrap:nowrap"><span class="meta" id="notif"></span><button class="gh sm" id="notifEdit" data-t="notifEdit"></button></div>
       <h2 id="hdep"></h2>
       <p class="hint" style="margin-top:-6px" data-t="aHelp"></p>
       <div class="depadm" id="depadm"></div>
@@ -248,6 +258,10 @@ const ICONS = {"music": "<path d=\"M12 3v10.55A4 4 0 1 0 14 17V7h4V3m-8 16a2 2 0
 // ---------- traduceri / traduzioni ----------
 const T = {
 ro: {
+  aFirstPw:"Bine ai venit! Alege parola ta", firstHint:"Este prima ta intrare: alege o parolă nouă, doar a ta.",
+  onbT:"Notificări pe WhatsApp", onbP:"Dacă vrei să primești un mesaj pe WhatsApp la fiecare persoană care se înscrie, scrie numărul tău. Dacă nu pui numărul, te anunțăm prin email.",
+  onbL:"Numărul tău de WhatsApp (opțional)", onbSave:"Salvează numărul", onbSkip:"Nu, prefer email",
+  notifWa:n => "🔔 Notificări pe WhatsApp: <b>" + n + "</b>", notifMail:m => "✉️ Notificări prin email: <b>" + m + "</b>", notifEdit:"Schimbă",
   w0a:"Ai un dar.", w0b:"Pune-l în slujire.", w0l:"Durează un minut: alegi unde vrei să slujești, iar liderul departamentului te contactează.",
   start:"Începe →", w1a:"Unde vrei", w1b:"să slujești?", w1l:"Poți alege mai multe departamente.",
   cont:n => n ? "Continuă · " + (n === 1 ? "1 ales" : n + " alese") + " →" : "Alege un departament", back:"← Înapoi",
@@ -295,6 +309,10 @@ ro: {
   csv:["Data","Nume","Telefon","Email","Departament","Detalii","Despre","Status"], locale:"ro-RO"
 },
 it: {
+  aFirstPw:"Benvenuto! Scegli la tua password", firstHint:"È il tuo primo accesso: scegli una nuova password, solo tua.",
+  onbT:"Notifiche su WhatsApp", onbP:"Se vuoi ricevere un messaggio WhatsApp per ogni persona che si iscrive, scrivi il tuo numero. Se non metti il numero, ti avvisiamo via email.",
+  onbL:"Il tuo numero WhatsApp (facoltativo)", onbSave:"Salva il numero", onbSkip:"No, preferisco l'email",
+  notifWa:n => "🔔 Notifiche su WhatsApp: <b>" + n + "</b>", notifMail:m => "✉️ Notifiche via email: <b>" + m + "</b>", notifEdit:"Cambia",
   w0a:"Hai un dono.", w0b:"Mettilo al servizio.", w0l:"Ci vuole un minuto: scegli dove vuoi servire e il responsabile del ministero ti contatta.",
   start:"Inizia →", w1a:"Dove vuoi", w1b:"servire?", w1l:"Puoi scegliere più ministeri.",
   cont:n => n ? "Continua · " + (n === 1 ? "1 scelto" : n + " scelti") + " →" : "Scegli un ministero", back:"← Indietro",
@@ -486,11 +504,15 @@ async function arpc(fn, body){
   if(!r.ok) throw new Error((await r.json().catch(()=>({}))).message || r.status);
   return r.status === 204 ? null : r.json();
 }
-function show(which){ ["login","setpw","app"].forEach(id => $(id).hidden = id !== which); }
+function show(which){ ["login","setpw","onb","app"].forEach(id => $(id).hidden = id !== which); }
+function showOnb(){ $("ntel").value = data && data.telefon ? data.telefon : ""; $("oerr").textContent = ""; show("onb"); }
 async function load(){ data = await arpc("slujire_admin_date"); render(); }
 async function act(fn, body){ try{ await arpc(fn, body); await load(); }catch(e){ if(e.message === "login") show("login"); else alert(e.message); } }
 async function enter(){
-  try{ await load(); show("app"); }
+  try{ await load();
+    if(!data.parola_schimbata){ openSetpw("aFirstPw", false); $("perr").className = "msg"; $("perr").textContent = t("firstHint"); }
+    else if(!data.configurat) showOnb();
+    else show("app"); }
   catch(e){ show("login"); if(e.message !== "login"){ $("lerr").className = "msg err"; $("lerr").textContent = e.message; } }
 }
 $("login").addEventListener("submit", async e => {
@@ -520,6 +542,7 @@ $("setpw").addEventListener("submit", async e => {
   if(a.length < 8){ P.textContent = t("peShort"); return; }
   if(a !== b){ P.textContent = t("peMismatch"); return; }
   try{ await authFetch("/user", {method:"PUT", headers:{Authorization:"Bearer " + await token()}, body:JSON.stringify({password:a})});
+    try{ await arpc("slujire_parola_schimbata"); }catch(e){}
     P.className = "msg"; P.textContent = t("peOk"); setTimeout(enter, 900); }
   catch(x){ P.textContent = x.message === "login" ? t("peExpired") : t("peFail") + x.message; }
 });
@@ -537,10 +560,20 @@ if(ADMIN){
   }
 }
 
+$("onb").addEventListener("submit", async e => {
+  e.preventDefault(); const O = $("oerr"); O.className = "msg err";
+  const v = $("ntel").value.trim();
+  if(v.replace(/\D/g, "").length < 8){ O.textContent = t("ePhone"); return; }
+  try{ await arpc("slujire_set_telefon", {tel:v}); await enter(); }catch(x){ O.textContent = x.message; }
+});
+$("onbSkip").onclick = async () => { try{ await arpc("slujire_set_telefon", {tel:null}); await enter(); }catch(x){ $("oerr").className = "msg err"; $("oerr").textContent = x.message; } };
+$("notifEdit").onclick = showOnb;
+$("ntel").addEventListener("input", () => $("oerr").textContent = "");
 const depById = id => data.departamente.find(d => d.id === id) || {id, nume:id};
 function render(){
   const vis_d = data.departamente.filter(d => !d.ascuns);
   $("cine").innerHTML = `${t("aWho")} <b style="color:var(--gold2);font-weight:600">${esc(LANG === "it" && DEP_IT[vis_d[0]?.id] && vis_d.length === 1 ? DEP_IT[vis_d[0].id][0] : data.nume)}</b><br><span style="font-size:13px">${esc(data.email || "")}</span>`;
+  $("notif").innerHTML = data.telefon ? t("notifWa", esc(data.telefon)) : t("notifMail", esc(data.email || ""));
   $("hdep").textContent = data.rol === "admin" ? t("aAll") : (vis_d.length === 1 ? t("aMine1") : t("aMineN"));
   $("depadm").innerHTML = vis_d.map(d => `
     <div class="card" style="margin:0">
