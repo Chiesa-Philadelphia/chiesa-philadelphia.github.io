@@ -88,14 +88,55 @@
   #qrbox svg{display:block;width:240px;height:240px}
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:9}
   .overlay>div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:340px}
+
+  /* ---- Lumină ---- */
+  :root{--bg:#1a100b;--card:rgba(255,240,215,.07);--line:rgba(255,230,190,.16);--ink:#fbf3e6;--muted:#d9c6a8;
+        --gold:#f2b86b;--gold2:#fbe0b6;--field:rgba(0,0,0,.28);--sel:rgba(242,184,107,.18);--btnink:#2a160b;--err:#ffb3a1;--ok:#cfe6b0}
+  html,body{background:#1a100b}
+  body{background-image:radial-gradient(120% 70% at 50% -10%,#8a4a1f 0%,#3a1e11 45%,#1a100b 80%);background-attachment:fixed;min-height:100vh}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(40% 25% at 50% 8%,rgba(255,190,110,.35),transparent 70%);animation:glow 6s ease-in-out infinite alternate;z-index:0}
+  @keyframes glow{from{opacity:.55}to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){body::before{animation:none}}
+  .wrap{position:relative;z-index:1}
+  .logo path{fill:#fff1dc}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;min-height:30px}
+  .topbar .lang{margin:0}
+  .prog{display:flex;gap:6px}.prog i{width:28px;height:4px;border-radius:4px;background:var(--line);transition:background .3s}.prog i.on{background:var(--gold)}
+  .scr{animation:inn .35s ease both}
+  @keyframes inn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .wh{font-family:Fraunces,serif;font-size:40px;line-height:1.05;margin:20px 0 10px;font-weight:700}
+  .wh em{color:var(--gold);font-style:italic;display:block}
+  .wl{color:var(--muted);font-size:16px;margin:0 0 22px;line-height:1.5}
+  .scr .logo{width:62%;margin:22px auto 4px}
+  .glass{border-radius:20px;background:var(--card);border:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .scr .verse{font-style:italic;font-size:18px;padding:18px;border-left:0;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+  .scr .verse small{font-style:normal}
+  .cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:22px;padding:17px;border:0;border-radius:18px;background:var(--gold);color:var(--btnink);font:700 17px Inter,sans-serif;cursor:pointer}
+  .cta:disabled{opacity:.45}
+  .back{background:none;border:0;color:var(--muted);font:500 14px Inter,sans-serif;margin-top:12px;width:100%;padding:10px;cursor:pointer}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid.one{grid-template-columns:1fr}
+  .tile{position:relative;padding:16px 14px;min-height:132px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;color:var(--ink);font:inherit;border-radius:20px;background:var(--card);border:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:all .2s}
+  .tile .ic{width:30px;height:30px;margin:0 0 4px}
+  .tile b{font-size:15px;line-height:1.2;padding-right:22px}.tile .d{font-size:12.5px;color:var(--muted);line-height:1.35}
+  .tile[aria-pressed=true]{background:var(--sel);border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 8px 30px rgba(242,184,107,.25)}
+  .tile[aria-pressed=true]::after{content:"✓";position:absolute;top:10px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--btnink);font:700 13px/22px Inter,sans-serif;text-align:center}
+  .tile .need{margin-top:auto;font-size:11.5px;font-weight:600;color:var(--btnink);background:var(--gold);border-radius:999px;padding:2px 8px;width:max-content}
+  .tile.closed{opacity:.4;cursor:default}.tile.closed .need{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .scr input[type=text],.scr input[type=tel],.scr input[type=email],.scr textarea{border-radius:16px;padding:15px 16px}
+  .doneic{width:88px;height:88px;margin:40px auto 0;border-radius:50%;background:var(--sel);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(242,184,107,.35)}
+  .doneic .ic{width:44px;height:44px;margin:0}
+  .sum{margin-top:18px;padding:14px;font-size:14px;color:var(--muted);text-align:left}
+  .sum b{color:var(--ink)}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="topbar"><div class="prog" id="prog" hidden><i></i><i></i><i></i><i></i></div>
   <div class="lang" role="group" aria-label="Limba / Lingua">
     <button type="button" data-lang="ro" aria-pressed="true">RO</button>
     <button type="button" data-lang="it" aria-pressed="false">IT</button>
-  </div>
+  </div></div>
   <header>
     <svg class="logo" role="img" aria-label="Biserica Philadelphia Mansuè" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 762 328"><path fill="#f4e9c9" fill-rule="evenodd" d="M400 229 401 234 404 241 404 244 406 247 408 257 411 264 407 266 400 266 405 273 424 291 441 303 462 314 464 314 469 317 471 317 481 321 484 321 485 322 488 322 493 324 497 324 498 325 511 326 512 327 543 327 544 326 557 325 558 324 562 324 563 323 567 323 571 321 574 321 575 320 586 317 589 315 591 315 596 312 598 312 616 302 626 295 626 292 616 292 615 293 610 293 608 295 587 305 585 305 572 310 568 310 567 311 558 312 557 313 551 313 550 314 518 314 517 313 505 312 504 311 497 310 493 308 490 308 489 307 484 306 481 304 479 304 474 301 472 301 464 297 462 295 457 293 448 287 440 280 439 280 421 262 421 261 413 252 408 243 406 241 405 238 403 236ZM364 205 360 209 360 211 359 212 359 222 361 226 367 230 377 230 381 228 383 225 383 222 380 222 375 226 369 226 366 223 365 219 366 218 382 218 383 217 383 210 382 208 376 204 366 204ZM365 213 369 208 374 208 377 211 377 213 378 214 377 215 366 215ZM330 204 329 206 329 223 331 228 334 230 342 230 346 227 348 230 351 230 353 228 353 206 352 204 348 204 346 207 346 222 341 226 339 226 336 223 336 221 335 220 335 205 334 204ZM304 205 301 209 301 213 302 215 307 218 315 220 317 222 317 224 315 226 309 226 305 222 305 221 302 221 301 222 301 226 307 230 317 230 318 229 320 229 323 225 323 219 320 216 309 213 307 211 307 209 310 207 312 207 318 212 320 212 322 211 322 208 317 204 306 204ZM272 204 272 229 273 230 276 230 278 228 278 213 281 209 285 208 288 210 288 212 289 213 289 229 290 230 294 230 295 228 295 209 294 207 290 204 282 204 278 207 276 204ZM245 205 242 208 242 212 243 213 245 213 247 210 250 208 256 208 258 210 258 213 257 214 254 214 249 216 245 216 242 218 240 222 240 224 242 228 245 230 253 230 259 227 261 230 265 230 265 223 264 222 264 208 263 206 260 204 247 204ZM257 217 258 218 258 222 254 226 249 226 247 224 247 221 249 219ZM364 194 364 195 365 195 366 197 370 200 374 200 370 194ZM202 194 200 196 200 228 201 230 205 230 206 229 206 206 207 205 209 209 209 212 210 213 213 228 215 230 219 230 221 228 221 226 223 222 223 218 225 214 225 210 227 206 228 207 228 228 230 230 233 230 234 229 234 196 232 194 225 194 222 199 222 203 220 207 219 214 217 217 215 213 215 210 214 209 214 206 213 205 213 202 212 201 211 196 209 194ZM646 243 599 198 598 198 595 194 592 192 590 192 641 241 641 242 638 244 633 244 632 245 628 245 627 246 609 248 608 249 600 251 591 256 588 253 583 245 573 235 573 234 569 231 569 230 563 224 551 208 550 208 549 206 548 206 547 204 543 201 543 200 547 207 554 215 560 224 586 252 588 255 588 257 583 260 580 260 579 261 576 260 577 261 576 263 570 263 569 264 564 264 559 266 555 266 554 267 548 268 541 271 540 270 534 271 524 276 519 277 513 280 508 284 502 286 499 283 499 281 497 278 497 275 496 274 496 272 491 259 491 256 489 252 490 250 492 252 495 258 495 262 500 273 500 279 501 281 504 283 503 282 503 279 506 274 506 271 503 268 503 261 501 257 501 253 498 250 500 247 503 249 498 233 495 228 495 226 493 223 493 221 491 218 491 216 489 213 487 206 478 211 474 212 474 216 477 223 477 226 478 227 478 229 480 233 480 236 483 243 483 246 486 253 488 263 492 273 494 283 495 284 496 289 498 291 503 291 504 290 506 290 511 287 513 287 516 285 518 285 523 282 528 281 541 275 544 275 547 273 549 273 559 269 562 269 566 267 569 267 573 265 576 267 581 267 582 266 588 265 591 263 593 264 593 262 595 260 607 254 614 252 621 247 623 247 624 248 637 247 638 246 645 245ZM579 262 580 261 582 261 583 262 582 263 580 263ZM582 261 583 260 585 260 586 261 585 262 583 262ZM480 223 481 222 482 223 481 224ZM436 121 434 121 433 120 404 120 402 122 402 174 405 177 408 177 412 174 412 155 413 154 432 153 437 151 441 148 444 142 444 131 441 125ZM412 129 414 127 420 127 421 128 427 128 429 129 433 134 433 140 427 145 424 145 423 146 414 146 412 144ZM303 120 301 123 301 173 303 175 305 175 306 176 340 176 341 175 343 175 344 170 343 168 341 168 340 167 312 167 311 166 311 152 312 151 336 151 337 150 339 150 341 148 341 145 337 142 312 142 311 141 311 129 312 128 340 128 342 127 343 122 341 120ZM245 120 242 123 242 172 243 174 247 176 268 176 269 175 274 175 280 172 286 166 288 162 289 155 290 154 290 141 289 140 289 136 285 128 280 123 273 120ZM254 128 266 128 267 129 270 129 276 134 278 138 278 141 279 142 279 152 278 153 278 157 276 161 271 166 269 166 268 167 254 167 253 166 253 129ZM32 120 3 120 0 123 0 173 2 176 7 177 9 176 11 173 11 155 12 154 31 153 36 151 41 146 42 141 43 140 43 133 42 132 42 129 39 124ZM11 128 12 127 19 127 20 128 26 128 28 129 31 132 31 134 32 135 31 141 26 145 22 145 21 146 12 146 11 145ZM518 119 516 120 516 122 515 123 515 172 517 176 522 177 524 176 526 173 526 122 525 120 523 119ZM558 119 555 121 552 127 552 129 550 132 550 134 544 147 543 152 540 157 539 162 536 168 536 175 539 177 544 176 550 162 572 162 574 164 574 166 576 169 576 171 578 175 581 177 584 177 587 174 587 168 583 160 582 155 579 150 579 148 577 145 577 143 575 140 575 138 573 135 573 133 571 130 569 123 565 119 562 119 561 118 560 119ZM561 131 563 134 568 150 570 153 569 154 554 154 553 153 553 151 555 148 557 140 559 137 559 135ZM457 119 455 121 455 123 454 124 454 171 455 172 455 174 459 177 461 177 465 174 465 152 466 151 490 151 491 152 491 174 495 177 498 177 502 172 502 124 501 123 501 121 499 119 497 119 496 118 492 120 491 122 491 141 490 142 466 142 465 141 465 121 463 119 461 119 460 118 459 119ZM356 119 354 121 354 123 353 124 353 170 355 175 357 175 358 176 390 176 393 174 393 169 391 167 365 167 364 166 364 122 362 119 360 119 359 118 358 119ZM210 119 208 119 207 118 206 119 203 119 199 123 199 125 195 133 194 138 191 143 190 148 188 151 188 153 186 156 186 158 181 169 181 174 185 177 188 177 191 174 194 164 196 162 218 162 220 165 220 167 223 174 226 177 231 176 233 173 233 169 231 166 231 164 229 161 229 159 227 156 225 149 222 144 222 142 218 134 217 129 213 121ZM206 132 207 132 209 135 212 146 215 152 214 154 199 154 198 153ZM140 119 138 122 138 172 139 174 143 176 174 176 178 173 178 170 177 168 175 167 150 167 149 166 149 123 146 119 144 119 143 118 142 119ZM119 118 118 119 116 119 114 121 114 174 118 177 122 176 125 172 125 123 122 119 120 119ZM98 119 96 119 95 118 94 119 92 119 90 121 90 141 89 142 65 142 64 141 64 122 63 120 61 119 56 119 54 120 54 122 53 123 53 173 55 176 60 177 62 176 64 173 64 152 65 151 89 151 90 152 90 174 93 177 96 177 100 174 100 121ZM665 28 663 29 663 31 659 41 665 50 674 68 674 70 678 77 682 91 681 92 673 93 672 94 664 94 663 95 657 95 656 96 632 97 631 98 616 98 610 104 610 106 613 112 648 111 649 110 667 109 668 108 673 108 674 107 686 106 688 109 688 113 689 114 689 118 690 119 690 124 691 125 691 130 692 131 692 141 693 142 693 176 692 177 692 187 691 188 691 193 690 194 690 200 689 201 688 209 687 210 686 217 684 221 684 224 683 225 680 236 676 244 676 246 672 253 672 255 660 277 652 289 649 292 648 315 653 310 665 294 670 285 674 280 677 273 679 271 690 248 691 243 693 240 693 238 699 222 699 219 700 218 700 215 701 214 701 211 703 206 703 201 705 196 705 190 706 189 706 183 707 182 707 171 708 170 708 136 707 135 707 124 706 123 706 117 705 116 705 111 704 110 703 103 706 101 717 99 721 97 731 95 732 94 752 88 755 86 760 85 761 83 761 80 753 73 751 73 732 80 729 80 726 82 723 82 722 83 715 84 711 86 707 86 703 88 700 88 697 81 697 78 696 77 695 72 690 61 690 59 678 34ZM564 3 564 6 566 11 567 21 572 23 575 23 579 25 582 25 585 27 592 29 613 40 626 50 630 52 631 46 634 38 622 28 598 14 596 14 591 11 589 11 586 9 584 9 574 5ZM509 0 504 0 503 1 499 1 498 2 493 2 492 3 489 3 488 4 485 4 481 6 478 6 477 7 472 8 446 20 424 35 419 40 418 40 418 41 416 42 406 52 405 54 404 54 404 55 396 64 394 68 392 76 390 79 389 84 386 90 386 99 392 90 400 81 401 82 401 88 438 53 439 53 440 51 457 39 474 30 476 30 481 27 483 27 493 23 496 23 501 21 505 21 506 20 510 20 511 19 518 19 519 17Z"/></svg>
     <h1 id="ttl" data-t="title"></h1>
@@ -109,43 +150,45 @@
   </section>
 
   <main id="main" hidden>
-    <div class="verse"><span data-t="verse"></span><small data-t="verseRef"></small></div>
-
-    <h2 data-t="howT"></h2>
-    <div class="info">
-      <div class="steps">
-        <div class="step"><span class="n">1</span><div><b data-t="h1t"></b><p data-t="h1d"></p></div></div>
-        <div class="step"><span class="n">2</span><div><b data-t="h2t"></b><p data-t="h2d"></p></div></div>
-        <div class="step"><span class="n">3</span><div><b data-t="h3t"></b><p data-t="h3d"></p></div></div>
-      </div>
-    </div>
-
-
     <form id="f" novalidate>
-      <h2 data-t="formT"></h2>
+    <section class="scr" data-s="0">
+      <svg class="logo" role="img" aria-label="Biserica Philadelphia Mansuè" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 762 328"><path fill="#f4e9c9" fill-rule="evenodd" d="M400 229 401 234 404 241 404 244 406 247 408 257 411 264 407 266 400 266 405 273 424 291 441 303 462 314 464 314 469 317 471 317 481 321 484 321 485 322 488 322 493 324 497 324 498 325 511 326 512 327 543 327 544 326 557 325 558 324 562 324 563 323 567 323 571 321 574 321 575 320 586 317 589 315 591 315 596 312 598 312 616 302 626 295 626 292 616 292 615 293 610 293 608 295 587 305 585 305 572 310 568 310 567 311 558 312 557 313 551 313 550 314 518 314 517 313 505 312 504 311 497 310 493 308 490 308 489 307 484 306 481 304 479 304 474 301 472 301 464 297 462 295 457 293 448 287 440 280 439 280 421 262 421 261 413 252 408 243 406 241 405 238 403 236ZM364 205 360 209 360 211 359 212 359 222 361 226 367 230 377 230 381 228 383 225 383 222 380 222 375 226 369 226 366 223 365 219 366 218 382 218 383 217 383 210 382 208 376 204 366 204ZM365 213 369 208 374 208 377 211 377 213 378 214 377 215 366 215ZM330 204 329 206 329 223 331 228 334 230 342 230 346 227 348 230 351 230 353 228 353 206 352 204 348 204 346 207 346 222 341 226 339 226 336 223 336 221 335 220 335 205 334 204ZM304 205 301 209 301 213 302 215 307 218 315 220 317 222 317 224 315 226 309 226 305 222 305 221 302 221 301 222 301 226 307 230 317 230 318 229 320 229 323 225 323 219 320 216 309 213 307 211 307 209 310 207 312 207 318 212 320 212 322 211 322 208 317 204 306 204ZM272 204 272 229 273 230 276 230 278 228 278 213 281 209 285 208 288 210 288 212 289 213 289 229 290 230 294 230 295 228 295 209 294 207 290 204 282 204 278 207 276 204ZM245 205 242 208 242 212 243 213 245 213 247 210 250 208 256 208 258 210 258 213 257 214 254 214 249 216 245 216 242 218 240 222 240 224 242 228 245 230 253 230 259 227 261 230 265 230 265 223 264 222 264 208 263 206 260 204 247 204ZM257 217 258 218 258 222 254 226 249 226 247 224 247 221 249 219ZM364 194 364 195 365 195 366 197 370 200 374 200 370 194ZM202 194 200 196 200 228 201 230 205 230 206 229 206 206 207 205 209 209 209 212 210 213 213 228 215 230 219 230 221 228 221 226 223 222 223 218 225 214 225 210 227 206 228 207 228 228 230 230 233 230 234 229 234 196 232 194 225 194 222 199 222 203 220 207 219 214 217 217 215 213 215 210 214 209 214 206 213 205 213 202 212 201 211 196 209 194ZM646 243 599 198 598 198 595 194 592 192 590 192 641 241 641 242 638 244 633 244 632 245 628 245 627 246 609 248 608 249 600 251 591 256 588 253 583 245 573 235 573 234 569 231 569 230 563 224 551 208 550 208 549 206 548 206 547 204 543 201 543 200 547 207 554 215 560 224 586 252 588 255 588 257 583 260 580 260 579 261 576 260 577 261 576 263 570 263 569 264 564 264 559 266 555 266 554 267 548 268 541 271 540 270 534 271 524 276 519 277 513 280 508 284 502 286 499 283 499 281 497 278 497 275 496 274 496 272 491 259 491 256 489 252 490 250 492 252 495 258 495 262 500 273 500 279 501 281 504 283 503 282 503 279 506 274 506 271 503 268 503 261 501 257 501 253 498 250 500 247 503 249 498 233 495 228 495 226 493 223 493 221 491 218 491 216 489 213 487 206 478 211 474 212 474 216 477 223 477 226 478 227 478 229 480 233 480 236 483 243 483 246 486 253 488 263 492 273 494 283 495 284 496 289 498 291 503 291 504 290 506 290 511 287 513 287 516 285 518 285 523 282 528 281 541 275 544 275 547 273 549 273 559 269 562 269 566 267 569 267 573 265 576 267 581 267 582 266 588 265 591 263 593 264 593 262 595 260 607 254 614 252 621 247 623 247 624 248 637 247 638 246 645 245ZM579 262 580 261 582 261 583 262 582 263 580 263ZM582 261 583 260 585 260 586 261 585 262 583 262ZM480 223 481 222 482 223 481 224ZM436 121 434 121 433 120 404 120 402 122 402 174 405 177 408 177 412 174 412 155 413 154 432 153 437 151 441 148 444 142 444 131 441 125ZM412 129 414 127 420 127 421 128 427 128 429 129 433 134 433 140 427 145 424 145 423 146 414 146 412 144ZM303 120 301 123 301 173 303 175 305 175 306 176 340 176 341 175 343 175 344 170 343 168 341 168 340 167 312 167 311 166 311 152 312 151 336 151 337 150 339 150 341 148 341 145 337 142 312 142 311 141 311 129 312 128 340 128 342 127 343 122 341 120ZM245 120 242 123 242 172 243 174 247 176 268 176 269 175 274 175 280 172 286 166 288 162 289 155 290 154 290 141 289 140 289 136 285 128 280 123 273 120ZM254 128 266 128 267 129 270 129 276 134 278 138 278 141 279 142 279 152 278 153 278 157 276 161 271 166 269 166 268 167 254 167 253 166 253 129ZM32 120 3 120 0 123 0 173 2 176 7 177 9 176 11 173 11 155 12 154 31 153 36 151 41 146 42 141 43 140 43 133 42 132 42 129 39 124ZM11 128 12 127 19 127 20 128 26 128 28 129 31 132 31 134 32 135 31 141 26 145 22 145 21 146 12 146 11 145ZM518 119 516 120 516 122 515 123 515 172 517 176 522 177 524 176 526 173 526 122 525 120 523 119ZM558 119 555 121 552 127 552 129 550 132 550 134 544 147 543 152 540 157 539 162 536 168 536 175 539 177 544 176 550 162 572 162 574 164 574 166 576 169 576 171 578 175 581 177 584 177 587 174 587 168 583 160 582 155 579 150 579 148 577 145 577 143 575 140 575 138 573 135 573 133 571 130 569 123 565 119 562 119 561 118 560 119ZM561 131 563 134 568 150 570 153 569 154 554 154 553 153 553 151 555 148 557 140 559 137 559 135ZM457 119 455 121 455 123 454 124 454 171 455 172 455 174 459 177 461 177 465 174 465 152 466 151 490 151 491 152 491 174 495 177 498 177 502 172 502 124 501 123 501 121 499 119 497 119 496 118 492 120 491 122 491 141 490 142 466 142 465 141 465 121 463 119 461 119 460 118 459 119ZM356 119 354 121 354 123 353 124 353 170 355 175 357 175 358 176 390 176 393 174 393 169 391 167 365 167 364 166 364 122 362 119 360 119 359 118 358 119ZM210 119 208 119 207 118 206 119 203 119 199 123 199 125 195 133 194 138 191 143 190 148 188 151 188 153 186 156 186 158 181 169 181 174 185 177 188 177 191 174 194 164 196 162 218 162 220 165 220 167 223 174 226 177 231 176 233 173 233 169 231 166 231 164 229 161 229 159 227 156 225 149 222 144 222 142 218 134 217 129 213 121ZM206 132 207 132 209 135 212 146 215 152 214 154 199 154 198 153ZM140 119 138 122 138 172 139 174 143 176 174 176 178 173 178 170 177 168 175 167 150 167 149 166 149 123 146 119 144 119 143 118 142 119ZM119 118 118 119 116 119 114 121 114 174 118 177 122 176 125 172 125 123 122 119 120 119ZM98 119 96 119 95 118 94 119 92 119 90 121 90 141 89 142 65 142 64 141 64 122 63 120 61 119 56 119 54 120 54 122 53 123 53 173 55 176 60 177 62 176 64 173 64 152 65 151 89 151 90 152 90 174 93 177 96 177 100 174 100 121ZM665 28 663 29 663 31 659 41 665 50 674 68 674 70 678 77 682 91 681 92 673 93 672 94 664 94 663 95 657 95 656 96 632 97 631 98 616 98 610 104 610 106 613 112 648 111 649 110 667 109 668 108 673 108 674 107 686 106 688 109 688 113 689 114 689 118 690 119 690 124 691 125 691 130 692 131 692 141 693 142 693 176 692 177 692 187 691 188 691 193 690 194 690 200 689 201 688 209 687 210 686 217 684 221 684 224 683 225 680 236 676 244 676 246 672 253 672 255 660 277 652 289 649 292 648 315 653 310 665 294 670 285 674 280 677 273 679 271 690 248 691 243 693 240 693 238 699 222 699 219 700 218 700 215 701 214 701 211 703 206 703 201 705 196 705 190 706 189 706 183 707 182 707 171 708 170 708 136 707 135 707 124 706 123 706 117 705 116 705 111 704 110 703 103 706 101 717 99 721 97 731 95 732 94 752 88 755 86 760 85 761 83 761 80 753 73 751 73 732 80 729 80 726 82 723 82 722 83 715 84 711 86 707 86 703 88 700 88 697 81 697 78 696 77 695 72 690 61 690 59 678 34ZM564 3 564 6 566 11 567 21 572 23 575 23 579 25 582 25 585 27 592 29 613 40 626 50 630 52 631 46 634 38 622 28 598 14 596 14 591 11 589 11 586 9 584 9 574 5ZM509 0 504 0 503 1 499 1 498 2 493 2 492 3 489 3 488 4 485 4 481 6 478 6 477 7 472 8 446 20 424 35 419 40 418 40 418 41 416 42 406 52 405 54 404 54 404 55 396 64 394 68 392 76 390 79 389 84 386 90 386 99 392 90 400 81 401 82 401 88 438 53 439 53 440 51 457 39 474 30 476 30 481 27 483 27 493 23 496 23 501 21 505 21 506 20 510 20 511 19 518 19 519 17Z"/></svg>
+      <h1 class="wh"><span data-t="w0a"></span><em data-t="w0b"></em></h1>
+      <p class="wl" data-t="w0l"></p>
+      <div class="verse"><span data-t="verse"></span><small data-t="verseRef"></small></div>
+      <button type="button" class="cta" data-go="1" data-t="start"></button>
+    </section>
+    <section class="scr" data-s="1" hidden>
+      <h1 class="wh"><span data-t="w1a"></span><em data-t="w1b"></em></h1>
+      <p class="wl" data-t="w1l"></p>
+      <div class="grid" id="deps"><p class="hint" data-t="loadingDeps"></p></div>
+      <div class="msg" id="msg1"></div>
+      <button type="button" class="cta" id="cont"></button>
+      <button type="button" class="back" data-go="0" data-t="back"></button>
+    </section>
+    <section class="scr" data-s="2" hidden>
+      <h1 class="wh"><span data-t="w2a"></span><em data-t="w2b"></em></h1>
       <label class="f" for="nume" data-t="lName"></label>
       <input id="nume" name="nume" type="text" autocomplete="name" required maxlength="120">
       <label class="f" for="telefon" data-t="lPhone"></label>
       <input id="telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30" placeholder="+39 ...">
       <label class="f" for="email" data-t="lEmail"></label>
       <input id="email" name="email" type="email" autocomplete="email" maxlength="160">
-      <label class="f" data-t="lDeps"></label>
-      <div class="deps" id="deps"><p class="hint" data-t="loadingDeps"></p></div>
-      <label class="f" for="alt" data-t="lOther"></label>
-      <input id="alt" name="alt" type="text" maxlength="200" data-tp="phOther">
       <label class="f" for="exp" data-t="lAbout"></label>
       <textarea id="exp" name="exp" maxlength="1500" data-tp="phAbout"></textarea>
       <label class="consent"><input type="checkbox" id="ok" required><span data-t="consent"></span></label>
-      <button type="submit" class="btn" id="btn" data-t="send"></button>
+      <button type="submit" class="cta" id="btn" data-t="send"></button>
       <div class="msg" id="msg"></div>
+      <button type="button" class="back" data-go="1" data-t="back"></button>
+    </section>
     </form>
+    <section class="scr" data-s="3" hidden>
+      <div class="doneic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.43 9.67c.04.11.07.21.07.33v5.22c0 .5-.19.98-.53 1.35l-2.79 3.05-3.4-3.4L6 15 8.8 2.86a1.114 1.114 0 0 1 2.2.25v4.96a2 2 0 0 0-.5-.07c-1.1 0-2 .9-2 2v3c0 .28.22.5.5.5s.5-.22.5-.5v-3c0-.55.45-1 1-1 .19 0 .35.07.5.16.12.07.21.16.3.26.03.04.06.08.08.13.02.04.04.08.05.12M2 19l4 3 1.17-1.27-3.45-3.45zm16-4L15.2 2.86a1.114 1.114 0 0 0-2.2.25v4.96c.16-.04.33-.07.5-.07 1.1 0 2 .9 2 2v3c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3c0-.55-.45-1-1-1-.19 0-.35.07-.5.16-.12.07-.21.16-.29.26-.03.04-.07.08-.09.13-.02.04-.04.08-.05.12-.04.11-.07.21-.07.33v5.22c0 .5.19.98.53 1.35l2.79 3.05 3.4-3.4zm2.28 2.28-3.45 3.45L18 22l4-3z"/></svg></div>
+      <h1 class="wh" style="text-align:center"><span data-t="doneA"></span><em id="doneName"></em></h1>
+      <p class="wl" style="text-align:center" data-t="doneP"></p>
+      <div class="sum glass"><b data-t="doneSum"></b><br><span id="doneDeps"></span></div>
+    </section>
   </main>
-
-  <section id="done" class="center" hidden>
-    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.43 9.67c.04.11.07.21.07.33v5.22c0 .5-.19.98-.53 1.35l-2.79 3.05-3.4-3.4L6 15 8.8 2.86a1.114 1.114 0 0 1 2.2.25v4.96a2 2 0 0 0-.5-.07c-1.1 0-2 .9-2 2v3c0 .28.22.5.5.5s.5-.22.5-.5v-3c0-.55.45-1 1-1 .19 0 .35.07.5.16.12.07.21.16.3.26.03.04.06.08.08.13.02.04.04.08.05.12M2 19l4 3 1.17-1.27-3.45-3.45zm16-4L15.2 2.86a1.114 1.114 0 0 0-2.2.25v4.96c.16-.04.33-.07.5-.07 1.1 0 2 .9 2 2v3c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3c0-.55-.45-1-1-1-.19 0-.35.07-.5.16-.12.07-.21.16-.29.26-.03.04-.07.08-.09.13-.02.04-.04.08-.05.12-.04.11-.07.21-.07.33v5.22c0 .5.19.98.53 1.35l2.79 3.05 3.4-3.4zm2.28 2.28-3.45 3.45L18 22l4-3z"/></svg>
-    <h2 data-t="doneT"></h2>
-    <p class="lead" data-t="doneP"></p>
-  </section>
 
   <section id="adm" hidden>
     <form id="login" hidden novalidate>
@@ -205,11 +248,16 @@ const ICONS = {"music": "<path d=\"M12 3v10.55A4 4 0 1 0 14 17V7h4V3m-8 16a2 2 0
 // ---------- traduceri / traduzioni ----------
 const T = {
 ro: {
+  w0a:"Ai un dar.", w0b:"Pune-l în slujire.", w0l:"Durează un minut: alegi unde vrei să slujești, iar liderul departamentului te contactează.",
+  start:"Începe →", w1a:"Unde vrei", w1b:"să slujești?", w1l:"Poți alege mai multe departamente.",
+  cont:n => n ? "Continuă · " + (n === 1 ? "1 ales" : n + " alese") + " →" : "Alege un departament", back:"← Înapoi",
+  w2a:"Cum te", w2b:"contactăm?", doneA:"Mulțumim,", doneSum:"Te-ai înscris la:",
+  seekShort:n => "Căutăm " + n, closedShort:"Nu căutăm acum",
   docTitle:"Implică-te în slujire · Biserica Philadelphia Mansuè",
   title:"Implică-te în slujire", adminTitle:"Administrare",
   lead:"Fiecare dintre noi are un dar de la Dumnezeu. Alege unde ai vrea să slujești și te vom contacta noi.",
   lockedT:"Pagină pentru membrii bisericii", lockedP:"Pentru a te înscrie, scanează codul QR afișat în biserică.",
-  verse:"„Ca niște buni ispravnici ai harului felurit al lui Dumnezeu, fiecare din voi să slujească altora după darul pe care l-a primit.”", verseRef:"1 Petru 4:10",
+  verse:"„Fiecare din voi să slujească altora după darul pe care l-a primit.”", verseRef:"1 Petru 4:10",
   howT:"Cum funcționează",
   h1t:"Alegi unde vrei să slujești", h1d:"Bifează unul sau mai multe departamente. Nu ai nevoie de experiență.",
   h2t:"Te contactăm noi", h2d:"În câteva zile liderul departamentului te sună sau îți scrie pe WhatsApp.",
@@ -247,6 +295,11 @@ ro: {
   csv:["Data","Nume","Telefon","Email","Departament","Detalii","Despre","Status"], locale:"ro-RO"
 },
 it: {
+  w0a:"Hai un dono.", w0b:"Mettilo al servizio.", w0l:"Ci vuole un minuto: scegli dove vuoi servire e il responsabile del ministero ti contatta.",
+  start:"Inizia →", w1a:"Dove vuoi", w1b:"servire?", w1l:"Puoi scegliere più ministeri.",
+  cont:n => n ? "Continua · " + (n === 1 ? "1 scelto" : n + " scelti") + " →" : "Scegli un ministero", back:"← Indietro",
+  w2a:"Come ti", w2b:"contattiamo?", doneA:"Grazie,", doneSum:"Ti sei iscritto a:",
+  seekShort:n => "Cerchiamo " + n, closedShort:"Non cerchiamo ora",
   docTitle:"Impegnati nel servizio · Chiesa Philadelphia Mansuè",
   title:"Impegnati nel servizio", adminTitle:"Amministrazione",
   lead:"Ognuno di noi ha ricevuto un dono da Dio. Scegli dove vorresti servire e ti contatteremo noi.",
@@ -318,7 +371,7 @@ function applyLang(){
   document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG));
   document.title = t("docTitle");
   if(ADMIN){ $("ttl").textContent = t("adminTitle"); }
-  ["msg","lerr","perr"].forEach(id => { $(id).textContent = ""; });
+  ["msg","msg1","lerr","perr"].forEach(id => { $(id).textContent = ""; });
   if(DEPS.length) renderDeps();
   if(data) render();
   if(!$("setpw").hidden) $("setpwT").textContent = t(setpwMode);
@@ -347,47 +400,64 @@ let DEPS = [], data = null, setpwMode = "aSetNew";
 try{ if(code) sessionStorage.setItem("k", code); else code = sessionStorage.getItem("k"); }catch(e){}
 applyLang();
 if(ADMIN){ $("adm").hidden = false; $("lead").hidden = true; }
-else if(code){ $("main").hidden = false; history.replaceState(null, "", location.pathname); loadDeps(); }
+else if(code){ $("main").hidden = false; document.querySelector("header").hidden = true; $("prog").hidden = false; history.replaceState(null, "", location.pathname); setTimeout(() => { go(0); loadDeps(); }, 0); }
 else $("locked").hidden = false;
 
-// ---------- formular ----------
+// ---------- formular pas cu pas ----------
+let step = 0; const SEL = new Set();
+function go(n){
+  step = n;
+  document.querySelectorAll(".scr").forEach(el => el.hidden = +el.dataset.s !== n);
+  document.querySelectorAll("#prog i").forEach((el, i) => el.classList.toggle("on", i <= n));
+  scrollTo(0, 0);
+}
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(+b.dataset.go));
+function updCont(){ const c = $("cont"); c.textContent = t("cont", SEL.size); c.disabled = !SEL.size; }
 function renderDeps(){
-  const sel = new Set([...document.querySelectorAll("input[name=dep]:checked")].map(i => i.value));
+  $("deps").classList.toggle("one", DEPS.length === 1);
   $("deps").innerHTML = DEPS.map(d => d.deschis
-    ? `<label class="dep"><input type="checkbox" name="dep" value="${esc(d.id)}" ${sel.has(d.id) ? "checked" : ""}>${icon(d.icon)}<span><div class="t">${esc(depN(d))}</div><div class="d">${esc(depD(d))}</div>${d.cautam ? `<span class="pill">${t("seeking", d.cautam)}</span>` : ""}</span></label>`
-    : `<div class="dep closed">${icon(d.icon)}<span><div class="t">${esc(depN(d))}</div><div class="d">${esc(depD(d))}</div><span class="pill off">${t("closed")}</span></span></div>`
+    ? `<button type="button" class="tile" data-id="${esc(d.id)}" aria-pressed="${SEL.has(d.id)}">${icon(d.icon)}<b>${esc(depN(d))}</b><span class="d">${esc(depD(d))}</span>${d.cautam ? `<span class="need">${t("seekShort", d.cautam)}</span>` : ""}</button>`
+    : `<div class="tile closed">${icon(d.icon)}<b>${esc(depN(d))}</b><span class="d">${esc(depD(d))}</span><span class="need">${t("closedShort")}</span></div>`
   ).join("");
+  document.querySelectorAll(".tile[data-id]").forEach(el => el.onclick = () => {
+    const id = el.dataset.id; SEL.has(id) ? SEL.delete(id) : SEL.add(id);
+    el.setAttribute("aria-pressed", SEL.has(id)); $("msg1").textContent = ""; updCont();
+  });
+  updCont();
 }
 async function loadDeps(){
-  try{ DEPS = await rpc("slujire_departamente"); renderDeps(); }
+  try{ DEPS = await rpc("slujire_departamente");
+    [...SEL].forEach(id => { if(!DEPS.some(d => d.id === id && d.deschis)) SEL.delete(id); });
+    renderDeps(); }
   catch(e){ $("deps").innerHTML = `<p class="msg err">${t("eDepsLoad")}</p>`; }
 }
+$("cont").onclick = () => { if(!SEL.size){ $("msg1").className = "msg err"; $("msg1").textContent = t("eDep"); return; } go(2); };
 const f = $("f"), msg = $("msg"), btn = $("btn");
 f.addEventListener("input", () => { if(msg.textContent) msg.textContent = ""; });
 f.addEventListener("submit", async e => {
   e.preventDefault(); msg.className = "msg"; msg.textContent = "";
   const nume = f.nume.value.trim(), tel = f.telefon.value.trim(), email = f.email.value.trim();
-  const deps = [...f.querySelectorAll("input[name=dep]:checked")].map(i => i.value);
-  const alt = f.alt.value.trim();
+  const deps = [...SEL];
   const err = nume.length < 2 ? t("eName") : tel.replace(/\D/g, "").length < 6 ? t("ePhone")
-    : (!deps.length && !alt) ? t("eDep") : !f.ok.checked ? t("eConsent") : "";
+    : !deps.length ? t("eDep") : !f.ok.checked ? t("eConsent") : "";
   if(err){ msg.className = "msg err"; msg.textContent = err; return; }
   btn.disabled = true; btn.textContent = t("sending");
   const grup = (crypto.randomUUID ? crypto.randomUUID() : "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)));
   const base = {grup, nume, telefon:tel, email:email||null, experienta:f.exp.value.trim()||null, consimtamant:true, cod_acces:code};
   const rows = deps.map(d => ({...base, departament:d, detalii:null}));
-  if(alt) rows.push({...base, departament:"altceva", detalii:alt});
   try{
     const r = await fetch(SB_URL + "/rest/v1/slujire_inscrieri", {method:"POST",
       headers:{apikey:SB_KEY, "Content-Type":"application/json", Prefer:"return=minimal"}, body:JSON.stringify(rows)});
     if(!r.ok) throw new Error(r.status);
-    $("main").hidden = true; $("done").hidden = false; scrollTo(0, 0);
+    $("doneName").textContent = nume.split(/\s+/)[0] + "!";
+    $("doneDeps").textContent = deps.map(id => depN(DEPS.find(d => d.id === id) || {id, nume:id})).join(" · ");
+    go(3);
   }catch(x){
     const closedNow = x.message === "401" || x.message === "403";
     msg.className = "msg err"; msg.textContent = closedNow ? t("eClosedNow") : t("eNet");
-    if(closedNow) loadDeps();
-    btn.disabled = false; btn.textContent = t("send");
+    if(closedNow){ await loadDeps(); go(1); $("msg1").className = "msg err"; $("msg1").textContent = t("eClosedNow"); }
   }
+  btn.disabled = false; btn.textContent = t("send");
 });
 
 // ---------- admin (login cu email) ----------
