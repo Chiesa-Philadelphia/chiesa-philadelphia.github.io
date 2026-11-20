@@ -202,6 +202,7 @@
     </form>
     <form id="setpw" hidden novalidate>
       <h2 id="setpwT" style="margin-top:0"></h2>
+      <p class="meta" id="setpwWho"></p>
       <label class="f" for="np1" data-t="aNew"></label>
       <input id="np1" type="password" autocomplete="new-password">
       <label class="f" for="np2" data-t="aRepeat"></label>
@@ -258,6 +259,7 @@ const ICONS = {"music": "<path d=\"M12 3v10.55A4 4 0 1 0 14 17V7h4V3m-8 16a2 2 0
 // ---------- traduceri / traduzioni ----------
 const T = {
 ro: {
+  acct:"Cont:",
   aFirstPw:"Bine ai venit! Alege parola ta", firstHint:"Este prima ta intrare: alege o parolă nouă, doar a ta.",
   onbT:"Notificări pe WhatsApp", onbP:"Dacă vrei să primești un mesaj pe WhatsApp la fiecare persoană care se înscrie, scrie numărul tău. Dacă nu pui numărul, te anunțăm prin email.",
   onbL:"Numărul tău de WhatsApp (opțional)", onbSave:"Salvează numărul", onbSkip:"Nu, prefer email",
@@ -309,6 +311,7 @@ ro: {
   csv:["Data","Nume","Telefon","Email","Departament","Detalii","Despre","Status"], locale:"ro-RO"
 },
 it: {
+  acct:"Account:",
   aFirstPw:"Benvenuto! Scegli la tua password", firstHint:"È il tuo primo accesso: scegli una nuova password, solo tua.",
   onbT:"Notifiche su WhatsApp", onbP:"Se vuoi ricevere un messaggio WhatsApp per ogni persona che si iscrive, scrivi il tuo numero. Se non metti il numero, ti avvisiamo via email.",
   onbL:"Il tuo numero WhatsApp (facoltativo)", onbSave:"Salva il numero", onbSkip:"No, preferisco l'email",
@@ -533,7 +536,8 @@ $("forgot").onclick = async () => {
     L.className = "msg"; L.textContent = t("leSent"); }
   catch(x){ L.className = "msg err"; L.textContent = t("leSendFail") + x.message; }
 };
-function openSetpw(mode, canCancel){ setpwMode = mode; $("setpwT").textContent = t(mode); $("np1").value = $("np2").value = ""; $("perr").textContent = ""; $("pwCancel").hidden = !canCancel; show("setpw"); }
+function openSetpw(mode, canCancel){ setpwMode = mode;
+  $("setpwWho").innerHTML = data && data.email ? `${t("acct")} <b style="color:var(--gold2)">${esc(data.email)}</b> · ${esc(data.nume)}` : ""; $("setpwT").textContent = t(mode); $("np1").value = $("np2").value = ""; $("perr").textContent = ""; $("pwCancel").hidden = !canCancel; show("setpw"); }
 $("chpw").onclick = () => openSetpw("aChPw", true);
 $("pwCancel").onclick = () => show(sess ? "app" : "login");
 $("setpw").addEventListener("submit", async e => {
